@@ -30,7 +30,12 @@ dnf5 install -y \
     xfce4-power-manager \
     xfce4-terminal \
     xfce4-screenshooter \
-    xfce4-taskmanager
+    xfce4-taskmanager \
+    xfce4-notifyd \
+    xfce4-pulseaudio-plugin \
+    xfce4-clipman-plugin \
+    xfce4-whiskermenu-plugin \
+    xfce4-weather-plugin
 
 ###############################################################################
 # Gestor de inicio de sesión
@@ -49,7 +54,7 @@ dnf5 install -y \
     adwaita-gtk3-theme
 
 ###############################################################################
-# Utilidades
+# Utilidades básicas
 ###############################################################################
 
 dnf5 install -y \
