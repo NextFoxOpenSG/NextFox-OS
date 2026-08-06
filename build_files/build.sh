@@ -1,27 +1,98 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -ouex pipefail
 
-# Copy the contents of system_files/ of the git repo to /
-cp -avf "/ctx/system_files"/. /
+###############################################################################
+# Copiar archivos personalizados
+###############################################################################
 
-### Install packages
+cp -avf /ctx/system_files/. /
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
+###############################################################################
+# Actualizar el sistema
+###############################################################################
 
-# this installs a package from fedora repos
-dnf5 install -y tmux
+dnf5 -y upgrade
 
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
+###############################################################################
+# Instalar XFCE
+###############################################################################
 
-#### Example for enabling a System Unit File
+dnf5 install -y \
+    xfce4-panel \
+    xfce4-session \
+    xfce4-settings \
+    xfdesktop \
+    xfwm4 \
+    thunar \
+    thunar-volman \
+    xfce4-appfinder \
+    xfce4-power-manager \
+    xfce4-terminal \
+    xfce4-screenshooter \
+    xfce4-taskmanager
 
-systemctl enable podman.socket
+###############################################################################
+# Gestor de inicio de sesión
+###############################################################################
+
+dnf5 install -y \
+    lightdm \
+    lightdm-gtk
+
+###############################################################################
+# Apariencia
+###############################################################################
+
+dnf5 install -y \
+    papirus-icon-theme \
+    adwaita-gtk3-theme
+
+###############################################################################
+# Utilidades
+###############################################################################
+
+dnf5 install -y \
+    fastfetch \
+    git \
+    curl \
+    wget \
+    unzip \
+    zip \
+    tar \
+    nano \
+    vim \
+    htop \
+    btop \
+    tree \
+    rsync
+
+###############################################################################
+# Red
+###############################################################################
+
+dnf5 install -y \
+    NetworkManager \
+    NetworkManager-wifi
+
+###############################################################################
+# Compresión
+###############################################################################
+
+dnf5 install -y \
+    file-roller \
+    p7zip \
+    unrar
+
+###############################################################################
+# Habilitar servicios
+###############################################################################
+
+systemctl enable NetworkManager.service
+systemctl enable lightdm.service
+
+###############################################################################
+# Limpiar caché
+###############################################################################
+
+dnf5 clean all
